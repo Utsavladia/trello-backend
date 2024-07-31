@@ -45,4 +45,22 @@ const fetchTasksByStatus = async (req, res) => {
   }
 };
 
-module.exports = { createTask, fetchTasksByStatus };
+
+const updateTaskStatus = async (req, res) => {
+  const { taskId } = req.params;
+  const { status } = req.body;
+
+  try {
+    const updatedTask = await Task.findByIdAndUpdate(
+      taskId,
+      { status },
+      { new: true }
+    );
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    console.error("Error updating task status:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+module.exports = { createTask, fetchTasksByStatus, updateTaskStatus };
